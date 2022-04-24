@@ -1,0 +1,55 @@
+#MySQL公式のリポジトリの登録(https://dev.mysql.com/downloads/repo/yum/ を参照して、 Red Hat Enterprise Linux 7 用の最新のリポジトリを追加する)
+sudo yum install -y https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+sudo yum -y remove mariadb-libs
+sudo rm -rf /var/lib/mysql
+sudo rpm -Uvh http://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+sudo yum -y install --enablerepo=mysql80-community mysql-community-server
+sudo yum update
+sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+sudo yum localinstall mysql80-community-release-el7-3.noarch.rpm
+sudo yum repolist all | grep mysql
+sudo yum-config-manager --disable mysql-connectors-community mysql-tools-community mysql80-community
+sudo yum install --enablerepo=mysql80-community mysql-community-server
+sudo yum install https://repo.mysql.com/yum/mysql-8.0-community/el/7/x86_64/mysql80-community-release-el7-3.noarch.rpm
+sudo yum -y update
+sudo systemctl start mysqld
+sudo systemctl stop mysqld
+sudo systemctl restart mysqld
+
+#インストール(yumでインストールできるphp80系パッケージの名称を確認します。)
+sudo rpm --import http://rpms.remirepo.net/RPM-GPG-KEY-remi
+sudo yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sudo yum install -y https://rpms.remirepo.net/enterprise/remi-release-7.rpm
+sudo yum install -y yum-utils
+sudo yum-config-manager --disable 'remi-php*'
+sudo yum-config-manager --enable remi-php80
+sudo yum repolist
+sudo yum update -y
+sudo yum install -y php
+
+
+#phpをインストール
+sudo yum install php8.0
+sudo yum install php-devel php-mysqlnd php-gd php-pear php-pecl-apc-devel php-pecl-zip php-gd php-zip php-mysqlnd
+
+#python3 をインストールします。
+sudo yum install -y python3 python3-devel
+
+#Java 8 (JDK) ランタイムのインストール
+sudo yum install java-1.8.0-openjdk
+
+#java 8 (JDK) 開発環境のインストール
+sudo yum install -y java-1.8.0-openjdk-devel
+
+#apacheインストール
+sudo yum install -y httpd httpd-devel
+sudo systemctl start httpd
+sudo systemctl enable httpd
+sudo systemctl is-enabled httpd
+
+#firewalld設定
+systemctl stop firewalld
+systemctl status firewalld
+firewall-cmd --remove-port=80/tcp --zone=public --permanent
+firewall-cmd --reload
+
